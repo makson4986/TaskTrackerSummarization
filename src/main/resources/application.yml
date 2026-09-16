@@ -10,11 +10,11 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JacksonJsonDeserializer
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
       acks: 1
       retries: 3
     topics:
-      summarization-requests: ${KAFKA_SUMMARIZATION_REQUEST_TOPIC}
+      summarization-requests: ${KAFKA_SUMMARIZATION_REQUESTS_TOPIC}
 llm:
   model: ${LLM_MODEL}
   auth-url: ${LLM_AUTH_URL}
