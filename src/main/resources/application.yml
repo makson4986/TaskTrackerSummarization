@@ -11,8 +11,6 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
-      acks: 1
-      retries: 3
     topics:
       summarization-requests: ${KAFKA_SUMMARIZATION_REQUESTS_TOPIC}
 llm:
