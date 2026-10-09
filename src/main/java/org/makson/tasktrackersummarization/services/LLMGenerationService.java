@@ -28,6 +28,7 @@ public class LLMGenerationService {
 
         return apiWebClient
                 .post()
+                .uri("/chat/completions")
                 .header("Authorization", "Bearer " + authToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)

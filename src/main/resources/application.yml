@@ -5,12 +5,17 @@ spring:
     web-application-type: none
   kafka:
     bootstrap-servers: ${KAFKA_BROKER_URL}
-    consumer:
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JacksonJsonDeserializer
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
+      properties:
+        spring.json.type.mapping: report:org.makson.tasktrackersummarization.dto.ReportDto
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JacksonJsonDeserializer
+      group-id: summarizationServiceGroup
+      properties:
+        spring.json.type.mapping: user_tasks:org.makson.tasktrackersummarization.dto.UserTasksDto
     topics:
       summarization-requests: ${KAFKA_SUMMARIZATION_REQUESTS_TOPIC}
 llm:

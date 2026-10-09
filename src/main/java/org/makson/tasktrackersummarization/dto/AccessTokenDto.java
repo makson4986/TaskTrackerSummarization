@@ -1,4 +1,8 @@
 package org.makson.tasktrackersummarization.dto;
 
-public record AccessTokenDto(String accessToken, long expiresAt) {
-}
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public record AccessTokenDto(
+        @JsonProperty("access_token") String accessToken,
+        @JsonProperty("expires_at") Long expiresAt
+) { }
