@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.makson.tasktrackersummarization.dto.FinishReason;
 import org.makson.tasktrackersummarization.dto.LLMResponseDto;
-import org.makson.tasktrackersummarization.dto.ReportDto;
 import org.makson.tasktrackersummarization.dto.UserTasksDto;
 import org.makson.tasktrackersummarization.exceptions.ReportGenerationException;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -29,20 +28,20 @@ public class SummarizationService {
             @Header(KafkaHeaders.REPLY_TOPIC) byte[] replyTopic
     ) {
         LLMResponseDto llmResponse = llmGenerationService.generateSummary(objectMapper.writeValueAsString(tasks));
-        ReportDto report = extractText(llmResponse);
+        String report = extractText(llmResponse);
 
-        ProducerRecord<String, ReportDto> producerRecord = new ProducerRecord<>(new String(replyTopic), report);
+        ProducerRecord<String, String> producerRecord = new ProducerRecord<>(new String(replyTopic), report);
         producerRecord.headers().add(KafkaHeaders.CORRELATION_ID, correlationId);
         kafkaService.sendMessage(producerRecord);
         log.info("The report for user '{}' was successfully generated and sent back", tasks.userEmail());
     }
 
-    private ReportDto extractText(LLMResponseDto llmResponse) {
+    private String extractText(LLMResponseDto llmResponse) {
         LLMResponseDto.Choices response = llmResponse.choices().getFirst();
         FinishReason finishReason = response.finishReason();
 
         return switch (finishReason) {
-            case STOP, FUNCTION_CALL -> objectMapper.readValue(response.message().content(), ReportDto.class);
+            case STOP, FUNCTION_CALL -> response.message().content();
             case BLACKLIST -> throw new ReportGenerationException("The request falls under thematic restrictions");
             case LENGTH -> throw new ReportGenerationException("Token limit reached in the message");
             case ERROR ->
