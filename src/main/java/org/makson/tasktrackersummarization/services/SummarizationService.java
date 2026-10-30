@@ -22,7 +22,7 @@ public class SummarizationService {
     private final ObjectMapper objectMapper;
 
     @KafkaListener(topics = "${spring.kafka.topics.summarization-requests}")
-    private void handleGenerationRequest(
+    public void handleGenerationRequest(
             UserTasksDto tasks,
             @Header(KafkaHeaders.CORRELATION_ID) byte[] correlationId,
             @Header(KafkaHeaders.REPLY_TOPIC) byte[] replyTopic
