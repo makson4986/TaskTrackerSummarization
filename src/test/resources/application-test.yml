@@ -1,0 +1,10 @@
+llm:
+  model: model
+  auth-url: url
+  api-url: url
+  authorization-key: key
+spring:
+  kafka:
+    topics:
+      summarization-requests: SUMMARIZATION_REQUESTS
+      summarization-responses: SUMMARIZATION_RESPONSES

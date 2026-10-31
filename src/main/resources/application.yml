@@ -7,7 +7,7 @@ spring:
     bootstrap-servers: ${KAFKA_BROKER_URL}
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
       properties:
         spring.json.type.mapping: report:org.makson.tasktrackersummarization.dto.ReportDto
     consumer:
